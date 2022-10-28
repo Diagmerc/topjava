@@ -21,8 +21,8 @@
             <td>${meal.getDate()}</td>
             <td>${meal.getDescription()}</td>
             <td>${meal.getCalories()}</td>
-            <td><a href="">Edit</a></td>
-            <td><a href="">Delete</a></td>
+            <td><a href="meals">Update</a> </td>
+            <td><a href="meals?action=delete&id=${meal.getId()}">Delete</a></td>
         </tr>
     </c:forEach>
 </table>
