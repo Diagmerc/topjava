@@ -17,16 +17,17 @@
     <th>Calories</th>
     </thead>
     <c:forEach items="${meals}" var="meal">
-        <tr>
-            <td>${meal.getDate()}</td>
-            <td>${meal.getDescription()}</td>
-            <td>${meal.getCalories()}</td>
-            <td><a href="meals">Update</a> </td>
-            <td><a href="meals?action=delete&id=${meal.getId()}">Delete</a></td>
+        <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.model.MealTo"/>
+        <tr class="${meal.excess ? 'excess' : 'normal'}">
+            <td><%=meal.getDateTime().toLocalDate()%></td>
+            <td>${meal.description}</td>
+            <td>${meal.calories}</td>
+            <td><a href="meals?action=update&id=${meal.id}">Update</a> </td>
+            <td><a href="meals?action=delete&id=${meal.id}">Delete</a></td>
         </tr>
     </c:forEach>
 </table>
 <br>
-<a href="updateCreate.jsp">Add</a>
+<a href="meals?action=create">Add</a>
 </body>
 </html>
