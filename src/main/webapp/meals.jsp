@@ -1,3 +1,5 @@
+<%@ page import="ru.javawebinar.topjava.util.TimeUtil" %>
+<%@ page import="java.time.LocalDateTime" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -19,7 +21,7 @@
     <c:forEach items="${meals}" var="meal">
         <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.model.MealTo"/>
         <tr class="${meal.excess ? 'excess' : 'normal'}">
-            <td><%=meal.getDateTime().toLocalDate()%></td>
+            <td><%=TimeUtil.dateToString(meal.getDateTime())%></td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
             <td><a href="meals?action=update&id=${meal.id}">Update</a> </td>
