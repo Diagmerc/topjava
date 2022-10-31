@@ -21,10 +21,10 @@
     <c:forEach items="${meals}" var="meal">
         <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.model.MealTo"/>
         <tr class="${meal.excess ? 'excess' : 'normal'}">
-            <td><%=TimeUtil.dateToString(meal.getDateTime())%></td>
+            <td>${TimeUtil.dateToString(meal.getDateTime())}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
-            <td><a href="meals?action=update&id=${meal.id}">Update</a> </td>
+            <td><a href="meals?action=update&id=${meal.id}">Update</a></td>
             <td><a href="meals?action=delete&id=${meal.id}">Delete</a></td>
         </tr>
     </c:forEach>

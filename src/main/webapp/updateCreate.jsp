@@ -8,12 +8,20 @@
 <body>
 <form method="post" action="meals">
     <input type="hidden" name="id" value="${meal.id}">
-    Date <input type="datetime-local" name="date" value="${meal.dateTime}">
-    <br>
-    Description<input name="description" value="${meal.description}">
-    <br>
-    Calories<input name="calories" value="${meal.calories}">
-    <br>
+    <dl>
+        <dt>Date</dt>
+        <dd><input type="datetime-local" name="date" value="${meal.dateTime}"></dd>
+    </dl>
+    <dl>
+        <dt>Description</dt>
+        <dd><input name="description" value="${meal.description}">
+        </dd>
+    </dl>
+    <dl>
+        <dt>Calories</dt>
+        <dd><input type="number" name="calories" value="${meal.calories}">
+        </dd>
+    </dl>
     <button type="submit">Save</button>
     <button onclick="window.history.back()" type="button">Cancel</button>
 </form>
