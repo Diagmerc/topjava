@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 public class Meal {
     private Integer id;
@@ -33,7 +34,7 @@ public class Meal {
     }
 
     public LocalDateTime getDateTime() {
-        return dateTime;
+        return dateTime.truncatedTo(ChronoUnit.MINUTES);
     }
 
     public String getDescription() {
@@ -51,4 +52,5 @@ public class Meal {
     public LocalTime getTime() {
         return dateTime.toLocalTime();
     }
+
 }

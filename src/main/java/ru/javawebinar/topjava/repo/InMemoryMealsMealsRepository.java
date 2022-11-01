@@ -30,7 +30,7 @@ public class InMemoryMealsMealsRepository implements MealsRepository {
 
     @Override
     public Meal save(Meal meal) {
-        if (meal.getId() == null) {
+        if (meal.getId() == null || meal.getId() >= meals.size()) {
             int newId = id.getAndIncrement();
             meal.setId(newId);
         }

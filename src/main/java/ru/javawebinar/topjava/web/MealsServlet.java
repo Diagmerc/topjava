@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -29,30 +30,20 @@ public class MealsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        try {
-            switch (action) {
-                case "delete":
-                    log.info("attribute delete");
-                    repository.delete(Integer.parseInt(request.getParameter("id")));
-                    response.sendRedirect("meals");
-                    break;
-                case "update": {
-                    log.info("attribute update");
-                    Meal meal = repository.getById(Integer.parseInt(request.getParameter("id")));
-                    request.setAttribute("meal", meal);
-                    request.getRequestDispatcher("/updateCreate.jsp").forward(request, response);
-                    break;
-                }
-                case "create": {
-                    log.info("attribute create");
-                    Meal meal = new Meal(LocalDateTime.now(), "", 0);
-                    request.setAttribute("meal", meal);
-                    request.getRequestDispatcher("/updateCreate.jsp").forward(request, response);
-                    break;
-                }
-            }
-        } finally {
-            sendViewList(request, response);
+        if (!Arrays.asList("delete", "update", "create").contains(action)) {
+            log.info("send List to view");
+            request.setAttribute("meals", MealsUtil.mealsWhithExcessList(repository.getAll(), 2000));
+            request.getRequestDispatcher("/meals.jsp").forward(request, response);
+        } else if (action.equals("delete")) {
+            log.info("attribute delete");
+            repository.delete(Integer.parseInt(request.getParameter("id")));
+            response.sendRedirect("meals");
+        } else {
+            log.info(action.equals("update") ? "update" : "create");
+            Meal meal = action.equals("update") ? repository.getById(Integer.parseInt(request.getParameter("id"))) :
+                    new Meal(LocalDateTime.now(), "", 0);
+            request.setAttribute("meal", meal);
+            request.getRequestDispatcher("/updateCreate.jsp").forward(request, response);
         }
     }
 
@@ -66,11 +57,5 @@ public class MealsServlet extends HttpServlet {
                 Integer.parseInt(request.getParameter("calories")));
         repository.save(meal);
         response.sendRedirect("meals");
-    }
-
-    private void sendViewList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.info("send List to view");
-        request.setAttribute("meals", MealsUtil.mealsWhithExcessList(repository.getAll(), 2000));
-        request.getRequestDispatcher("/meals.jsp").forward(request, response);
     }
 }

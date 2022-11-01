@@ -10,7 +10,7 @@
     <input type="hidden" name="id" value="${meal.id}">
     <dl>
         <dt>Date</dt>
-        <dd><input type="datetime-local" name="date" value="${TimeUtil.dateToString(meal.dateTime)}"></dd>
+        <dd><input type="datetime-local" name="date" value="${meal.dateTime}"></dd>
     </dl>
     <dl>
         <dt>Description</dt>
