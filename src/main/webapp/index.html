@@ -10,10 +10,14 @@
     <li><a href="users">Users</a></li>
     <li><a href="meals">Meals</a></li>
 </ul>
-<br><select name="role">
-    <option value="1">Admin</option>
-    <option value="2">User</option>
-</select>
-<p><input type="submit" value="Отправить"></p>
+<br>
+<p>Ваш статус?</p>
+<form method="post" action="users">
+    <select name="role">
+        <option value="2" selected>Пользователь</option>
+        <option value="1">Админ</option>
+    </select>
+    <input type="submit" value="Отправить">
+</form>
 </body>
 </html>

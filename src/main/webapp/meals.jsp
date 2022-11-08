@@ -22,7 +22,21 @@
     <hr/>
     <h2>Meals</h2>
     <a href="meals?action=create">Add Meal</a>
-    <br><br>
+    <br>
+    <form method="post" action="meals?action=filter">
+        <dl>
+            <dt>Date:</dt>
+            <dd><input type="date" name="dateStart" required>
+                <input type="date" name="dateEnd" required></dd>
+        </dl>
+        <dl>
+            <dt>Time:</dt>
+            <dd><input type="time" name="timeStart" required>
+                <input type="time" name="timeEnd" required></dd>
+        </dl>
+        <button type="submit">Искать</button>
+    </form>
+    <br>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>

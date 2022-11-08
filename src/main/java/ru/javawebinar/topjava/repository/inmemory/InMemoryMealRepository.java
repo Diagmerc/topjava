@@ -2,15 +2,19 @@ package ru.javawebinar.topjava.repository.inmemory;
 
 import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.util.Util;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryMealRepository implements MealRepository {
@@ -19,6 +23,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     {
         MealsUtil.meals.forEach(this::save);
+        MealsUtil.meals.forEach(meal -> meal.setUserId(1));
     }
 
     @Override
@@ -43,8 +48,19 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public Collection<Meal> getAll() {
-        return repository.values();
+    public Collection<Meal> getAll(int userId) {
+        return repository.values()
+                .stream()
+                .filter(Objects::nonNull)
+                .filter(o -> o.getUserId() == userId).collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<Meal> getAllFilteredByDateTime(LocalDate start, LocalDate end, int userId) {
+        return getAll(userId)
+                .stream()
+                .filter(o-> Util.isBetweenHalfOpen(o.getDate(), start,end))
+                .collect(Collectors.toList());
     }
 }
 

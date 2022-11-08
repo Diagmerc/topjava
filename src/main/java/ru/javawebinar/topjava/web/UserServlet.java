@@ -16,9 +16,15 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("forward to users");
-        String role = request.getParameter("role");
-        if(role != null){
-        }
         request.getRequestDispatcher("/users.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String role = req.getParameter("role");
+        if (role != null) {
+            SecurityUtil.setId(Integer.parseInt(role));
+        }
+        resp.sendRedirect("meals");
     }
 }
