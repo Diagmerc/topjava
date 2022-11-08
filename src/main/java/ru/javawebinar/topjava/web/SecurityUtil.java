@@ -8,6 +8,10 @@ public class SecurityUtil {
         return 1;
     }
 
+    public static int authAdminId() {
+        return 2;
+    }
+
     public static int authUserCaloriesPerDay() {
         return DEFAULT_CALORIES_PER_DAY;
     }
