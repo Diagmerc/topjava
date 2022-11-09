@@ -23,16 +23,17 @@
     <h2>Meals</h2>
     <a href="meals?action=create">Add Meal</a>
     <br>
-    <form action="meals?action=filter">
+    <form action="meals">
+        <input type="hidden" name="action" value="filter">
         <dl>
             <dt>Date:</dt>
-            <dd><input type="date" name="dateStart" required>
-                <input type="date" name="dateEnd" required></dd>
+            <dd><input type="date" name="dateStart" required></dd>
+            <dd><input type="date" name="dateEnd" required></dd>
         </dl>
         <dl>
             <dt>Time:</dt>
-            <dd><input type="time" name="timeStart" required>
-                <input type="time" name="timeEnd" required></dd>
+            <dd><input type="time" name="timeStart" required></dd>
+            <dd><input type="time" name="timeEnd" required></dd>
         </dl>
         <button type="submit">Искать</button>
     </form>

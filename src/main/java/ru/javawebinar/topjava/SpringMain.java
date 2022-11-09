@@ -18,7 +18,7 @@ public class SpringMain {
             System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
             MealRestController mealRestController = appCtx.getBean(MealRestController.class);
             System.out.println(mealRestController.getAllFilteredByDateTime(LocalTime.of(12, 00), LocalTime.of(14, 00),
-                    LocalDate.of(2020, 01, 30), LocalDate.of(2020, 01, 31)
+                    LocalDate.of(2020, 01, 30), LocalDate.of(2020, 01, 31), 2
             ));
         }
     }
