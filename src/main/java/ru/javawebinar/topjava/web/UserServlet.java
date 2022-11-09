@@ -22,9 +22,9 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String role = req.getParameter("role");
-        if (role != null) {
-            SecurityUtil.setId(Integer.parseInt(role));
-        }
+//        if (role != null) {
+//            SecurityUtil.setId(Integer.parseInt(role));
+//        }
         resp.sendRedirect("meals");
     }
 }

@@ -30,11 +30,11 @@ public class MealRestController {
     }
 
     public Collection<Meal> getAll() {
-        return service.getAll(SecurityUtil.id);
+        return service.getAll(SecurityUtil.authUserId());
     }
 
     public Collection<MealTo> getAllFilteredByDateTime(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
-        Collection<Meal> allFilteredByDateTime = service.getAllFilteredByDateTime(startDate, endDate, SecurityUtil.id);
+        Collection<Meal> allFilteredByDateTime = service.getAllFilteredByDateTime(startDate, endDate, SecurityUtil.authUserId());
         return MealsUtil.getFilteredTos(allFilteredByDateTime, SecurityUtil.authUserCaloriesPerDay(),startTime,endTime);
     }
 }
