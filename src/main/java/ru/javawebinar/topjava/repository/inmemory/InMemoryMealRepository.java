@@ -10,8 +10,8 @@ import ru.javawebinar.topjava.util.Util;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -19,45 +19,48 @@ import java.util.stream.Collectors;
 @Repository
 public class InMemoryMealRepository implements MealRepository {
     private static final Logger log = LoggerFactory.getLogger(InMemoryMealRepository.class);
-    private final Map<Integer, Meal> repository = new ConcurrentHashMap<>();
+    private final Map<Integer, Map<Integer, Meal>> repository = new ConcurrentHashMap<>();
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        MealsUtil.meals.forEach(this::save);
-        MealsUtil.meals.forEach(meal -> meal.setUserId(1));
+        MealsUtil.meals.forEach(meal -> save(meal, 1));
     }
 
     @Override
-    public Meal save(Meal meal) {
+    public Meal save(Meal meal, int userId) {
+        Map<Integer, Meal> userRepository = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
         log.info("save {}", meal);
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
-            repository.put(meal.getId(), meal);
+            userRepository.put(meal.getId(), meal);
             return meal;
         }
         // handle case: update, but not present in storage
-        return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
+        return userRepository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
     }
 
     @Override
-    public boolean delete(int id) {
+    public boolean delete(int id, int userId) {
+        Map<Integer, Meal> userRepository = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
         log.info("delete {}", id);
-        return repository.remove(id) != null;
+        return userRepository != null && userRepository.remove(id) != null;
     }
 
     @Override
-    public Meal get(int id) {
+    public Meal get(int id, int userId) {
+        Map<Integer, Meal> userRepository = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
         log.info("get {}", id);
-        return repository.get(id);
+        return userRepository == null ? null : userRepository.get(id);
     }
 
     @Override
     public Collection<Meal> getAll(int userId) {
+        Map<Integer, Meal> userRepository = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
         log.info("getAll");
-        return repository.values()
+        return userRepository.values()
                 .stream()
-                .filter(Objects::nonNull)
-                .filter(o -> o.getUserId() == userId).collect(Collectors.toList());
+                .sorted(Comparator.comparing(Meal::getDateTime).reversed())
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -51,7 +51,7 @@ public class InMemoryUserRepository implements UserRepository {
         return repository.values()
                 .stream()
                 .filter(Objects::nonNull)
-                .sorted(Comparator.comparing(AbstractNamedEntity::getName))
+                .sorted(Comparator.comparing(User::getName).thenComparing(User::getEmail))
                 .collect(Collectors.toList());
     }
 
