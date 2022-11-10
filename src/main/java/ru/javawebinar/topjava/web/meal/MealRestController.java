@@ -28,33 +28,33 @@ public class MealRestController {
     public Meal create(Meal meal) {
         log.info("create {}", meal);
         checkNew(meal);
-        return service.create(meal, SecurityUtil.id);
+        return service.create(meal, SecurityUtil.authUserId());
     }
 
     public void update(Meal meal, int id) {
         log.info("update {} with id={}", meal, meal.getId());
         assureIdConsistent(meal, id);
-        service.update(meal, SecurityUtil.id);
+        service.update(meal, SecurityUtil.authUserId());
     }
 
     public void delete(int id) {
         log.info("delete {}", id);
-        service.delete(id, SecurityUtil.id);
+        service.delete(id, SecurityUtil.authUserId());
     }
 
     public Meal get(int id) {
         log.info("get {}", id);
-        return service.get(id, SecurityUtil.id);
+        return service.get(id, SecurityUtil.authUserId());
     }
 
     public List<MealTo> getAll() {
-        log.info("getAll {}", SecurityUtil.id);
-        return MealsUtil.getTos(service.getAll(SecurityUtil.id), MealsUtil.DEFAULT_CALORIES_PER_DAY);
+        log.info("getAll {}", SecurityUtil.authUserId());
+        return MealsUtil.getTos(service.getAll(SecurityUtil.authUserId()), MealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 
     public List<MealTo> getAllFilteredByDateTime(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
         log.info("getAllFilteredByDateTime");
-        Collection<Meal> allFilteredByDateTime = service.getAllFilteredByDateTime(startDate, endDate, SecurityUtil.id);
+        Collection<Meal> allFilteredByDateTime = service.getAllFilteredByDateTime(startDate, endDate, SecurityUtil.authUserId());
         return MealsUtil.getFilteredTos(allFilteredByDateTime, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
     }
 }

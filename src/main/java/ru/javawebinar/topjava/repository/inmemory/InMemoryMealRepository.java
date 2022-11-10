@@ -31,7 +31,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal, int userId) {
-        Map<Integer, Meal> userRepository = repository.computeIfAbsent(userId, (id) -> new ConcurrentHashMap<>());
+        Map<Integer, Meal> userRepository = repository.computeIfAbsent(userId, (key) -> new ConcurrentHashMap<>());
         log.info("save {}", meal);
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
@@ -44,21 +44,21 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public boolean delete(int id, int userId) {
-        Map<Integer, Meal> userRepository = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
+        Map<Integer, Meal> userRepository = repository.computeIfAbsent(userId, (key) -> new ConcurrentHashMap<>());
         log.info("delete {}", id);
         return userRepository != null && userRepository.remove(id) != null;
     }
 
     @Override
     public Meal get(int id, int userId) {
-        Map<Integer, Meal> userRepository = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
+        Map<Integer, Meal> userRepository = repository.computeIfAbsent(userId, (key) -> new ConcurrentHashMap<>());
         log.info("get {}", id);
         return userRepository == null ? null : userRepository.get(id);
     }
 
     @Override
     public List<Meal> getAll(int userId) {
-        Map<Integer, Meal> userRepository = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
+        Map<Integer, Meal> userRepository = repository.computeIfAbsent(userId, (key) -> new ConcurrentHashMap<>());
         log.info("getAll");
         return userRepository.values()
                 .stream()
@@ -71,7 +71,7 @@ public class InMemoryMealRepository implements MealRepository {
         log.info("getAllFilteredByDateTime");
         return getAll(userId)
                 .stream()
-                .filter(o -> Util.isBetweenHalfOpen(o.getDate(), start, end))
+                .filter(meal -> Util.isBetweenHalfOpen(meal.getDate(), start, end))
                 .collect(Collectors.toList());
     }
 }
