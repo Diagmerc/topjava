@@ -1,3 +1,5 @@
+<%@ page import="ru.javawebinar.topjava.util.Util" %>
+<%@ page import="ru.javawebinar.topjava.web.SecurityUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -20,20 +22,20 @@
 <section>
     <h3><a href="index.html">Home</a></h3>
     <hr/>
-    <h2>Meals</h2>
+    <h2>Meals for user - ${SecurityUtil.id}</h2>
     <a href="meals?action=create">Add Meal</a>
     <br>
     <form action="meals">
         <input type="hidden" name="action" value="filter">
         <dl>
             <dt>Date:</dt>
-            <dd><input type="date" name="dateStart" required></dd>
-            <dd><input type="date" name="dateEnd" required></dd>
+            <dd><input type="date" name="dateStart" value="${Util.minDate}" ></dd>
+            <dd><input type="date" name="dateEnd" value="${Util.maxDate}" ></dd>
         </dl>
         <dl>
             <dt>Time:</dt>
-            <dd><input type="time" name="timeStart" required></dd>
-            <dd><input type="time" name="timeEnd" required></dd>
+            <dd><input type="time" name="timeStart" value="${Util.minTime}" ></dd>
+            <dd><input type="time" name="timeEnd" value="${Util.maxTime}" ></dd>
         </dl>
         <button type="submit">Искать</button>
     </form>

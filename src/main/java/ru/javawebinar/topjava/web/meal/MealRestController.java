@@ -13,6 +13,7 @@ import ru.javawebinar.topjava.web.SecurityUtil;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
+import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
@@ -24,36 +25,36 @@ public class MealRestController {
     @Autowired
     private MealService service;
 
-    public Meal create(Meal meal, int userId) {
+    public Meal create(Meal meal) {
         log.info("create {}", meal);
         checkNew(meal);
-        return service.create(meal, userId);
+        return service.create(meal, SecurityUtil.id);
     }
 
-    public void update(Meal meal, int id, int userId) {
+    public void update(Meal meal, int id) {
         log.info("update {} with id={}", meal, meal.getId());
         assureIdConsistent(meal, id);
-        service.update(meal, userId);
+        service.update(meal, SecurityUtil.id);
     }
 
-    public void delete(int id, int userId) {
+    public void delete(int id) {
         log.info("delete {}", id);
-        service.delete(id, userId);
+        service.delete(id, SecurityUtil.id);
     }
 
-    public Meal get(int id, int userId) {
+    public Meal get(int id) {
         log.info("get {}", id);
-        return service.get(id, userId);
+        return service.get(id, SecurityUtil.id);
     }
 
-    public Collection<Meal> getAll(int userId) {
-        log.info("getAll {}", userId);
-        return service.getAll(userId);
+    public List<MealTo> getAll() {
+        log.info("getAll {}", SecurityUtil.id);
+        return MealsUtil.getTos(service.getAll(SecurityUtil.id), MealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 
-    public Collection<MealTo> getAllFilteredByDateTime(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate, int userID) {
+    public List<MealTo> getAllFilteredByDateTime(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
         log.info("getAllFilteredByDateTime");
-        Collection<Meal> allFilteredByDateTime = service.getAllFilteredByDateTime(startDate, endDate, userID);
+        Collection<Meal> allFilteredByDateTime = service.getAllFilteredByDateTime(startDate, endDate, SecurityUtil.id);
         return MealsUtil.getFilteredTos(allFilteredByDateTime, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
     }
 }

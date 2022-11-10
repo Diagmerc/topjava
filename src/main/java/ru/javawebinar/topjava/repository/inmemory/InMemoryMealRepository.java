@@ -10,8 +10,8 @@ import ru.javawebinar.topjava.util.Util;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -31,7 +31,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal, int userId) {
-        Map<Integer, Meal> userRepository = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
+        Map<Integer, Meal> userRepository = repository.computeIfAbsent(userId, (id) -> new ConcurrentHashMap<>());
         log.info("save {}", meal);
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
@@ -57,7 +57,7 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public Collection<Meal> getAll(int userId) {
+    public List<Meal> getAll(int userId) {
         Map<Integer, Meal> userRepository = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
         log.info("getAll");
         return userRepository.values()
@@ -67,7 +67,7 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public Collection<Meal> getAllFilteredByDateTime(LocalDate start, LocalDate end, int userId) {
+    public List<Meal> getAllFilteredByDateTime(LocalDate start, LocalDate end, int userId) {
         log.info("getAllFilteredByDateTime");
         return getAll(userId)
                 .stream()
