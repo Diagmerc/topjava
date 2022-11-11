@@ -7,8 +7,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Util {
-    public static LocalTime minTime = LocalTime.of(0, 0);
-    public static LocalTime maxTime = LocalTime.of(23, 59);
+    public static LocalTime minTime = LocalTime.MIN;
+    public static LocalTime maxTime = LocalTime.MAX;
     public static LocalDate minDate = LocalDate.of(2000, 1, 1);
     public static LocalDate maxDate = LocalDate.of(2100, 12, 31);
 
