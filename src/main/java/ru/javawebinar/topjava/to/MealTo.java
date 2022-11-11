@@ -1,8 +1,12 @@
 package ru.javawebinar.topjava.to;
 
+import ru.javawebinar.topjava.model.Meal;
+
 import java.time.LocalDateTime;
 
 public class MealTo {
+    private Integer userId;
+
     private final Integer id;
 
     private final LocalDateTime dateTime;
@@ -19,6 +23,14 @@ public class MealTo {
         this.description = description;
         this.calories = calories;
         this.excess = excess;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Integer getId() {

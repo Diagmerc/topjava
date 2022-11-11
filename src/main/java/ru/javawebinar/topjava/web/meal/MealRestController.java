@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
@@ -49,12 +50,17 @@ public class MealRestController {
 
     public List<MealTo> getAll() {
         log.info("getAll {}", SecurityUtil.authUserId());
-        return MealsUtil.getTos(service.getAll(SecurityUtil.authUserId()), MealsUtil.DEFAULT_CALORIES_PER_DAY);
+        return addUserIdforMeals(MealsUtil.getTos(service.getAll(SecurityUtil.authUserId()), MealsUtil.DEFAULT_CALORIES_PER_DAY));
     }
 
     public List<MealTo> getAllFilteredByDateTime(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
         log.info("getAllFilteredByDateTime");
         Collection<Meal> allFilteredByDateTime = service.getAllFilteredByDateTime(startDate, endDate, SecurityUtil.authUserId());
-        return MealsUtil.getFilteredTos(allFilteredByDateTime, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
+        return addUserIdforMeals(MealsUtil.getFilteredTos(allFilteredByDateTime, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime));
+    }
+
+    public List<MealTo> addUserIdforMeals(List<MealTo> mealToList){
+        mealToList.stream().forEach(mealTo -> mealTo.setUserId(SecurityUtil.authUserId()));
+        return mealToList;
     }
 }

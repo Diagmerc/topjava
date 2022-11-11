@@ -22,7 +22,7 @@
 <section>
     <h3><a href="index.html">Home</a></h3>
     <hr/>
-    <h2>Meals for user - ${SecurityUtil.id}</h2>
+    <h2>Meals</h2>
     <a href="meals?action=create">Add Meal</a>
     <br>
     <form action="meals">
@@ -59,7 +59,7 @@
                         <%--${fn:replace(meal.dateTime, 'T', ' ')}--%>
                         ${fn:formatDateTime(meal.dateTime)}
                 </td>
-                <td>${meal.description}</td>
+                <td>${meal.description} for user ${meal.userId}</td>
                 <td>${meal.calories}</td>
                 <td><a href="meals?action=update&id=${meal.id}">Update</a></td>
                 <td><a href="meals?action=delete&id=${meal.id}">Delete</a></td>
