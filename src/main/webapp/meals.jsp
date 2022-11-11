@@ -29,13 +29,13 @@
         <input type="hidden" name="action" value="filter">
         <dl>
             <dt>Date:</dt>
-            <dd><input type="date" name="dateStart" value="${Util.minDate}" ></dd>
-            <dd><input type="date" name="dateEnd" value="${Util.maxDate}" ></dd>
+            <dd><input type="date" name="dateStart" value="" ></dd>
+            <dd><input type="date" name="dateEnd" value="" ></dd>
         </dl>
         <dl>
             <dt>Time:</dt>
-            <dd><input type="time" name="timeStart" value="${Util.minTime}" ></dd>
-            <dd><input type="time" name="timeEnd" value="${Util.maxTime}" ></dd>
+            <dd><input type="time" name="timeStart" value="" ></dd>
+            <dd><input type="time" name="timeEnd" value="" ></dd>
         </dl>
         <button type="submit">Искать</button>
     </form>

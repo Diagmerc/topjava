@@ -6,6 +6,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.StringUtils;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.util.Util;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
 import javax.servlet.ServletException;
@@ -70,10 +71,10 @@ public class MealServlet extends HttpServlet {
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
             case "filter":
-                LocalDate startDate = LocalDate.parse(request.getParameter("dateStart"));
-                LocalDate endDate = LocalDate.parse(request.getParameter("dateEnd"));
-                LocalTime startTime = LocalTime.parse(request.getParameter("timeStart"));
-                LocalTime endTime = LocalTime.parse(request.getParameter("timeEnd"));
+                LocalDate startDate = Util.parseLocalDate(request.getParameter("dateStart"));
+                LocalDate endDate = Util.parseLocalDate(request.getParameter("dateEnd"));
+                LocalTime startTime = Util.parseLocalTime(request.getParameter("timeStart"));
+                LocalTime endTime = Util.parseLocalTime(request.getParameter("timeEnd"));
                 request.setAttribute("meals", mealRestController.getAllFilteredByDateTime(
                         startTime, endTime, startDate, endDate
                 ));
