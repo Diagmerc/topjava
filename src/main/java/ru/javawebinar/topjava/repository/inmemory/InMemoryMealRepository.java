@@ -24,9 +24,9 @@ public class InMemoryMealRepository implements MealRepository {
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        MealsUtil.meals.forEach(meal -> save(meal.setUserId(1), 1));
-        save(new Meal(LocalDateTime.now(), "обед", 100500).setUserId(2), 2);
-        save(new Meal(LocalDateTime.now(), "Ужин", 10).setUserId(2), 2);
+        MealsUtil.meals.forEach(meal -> save(meal, 1));
+        save(new Meal(LocalDateTime.now(), "обед" + " user2", 100500), 2);
+        save(new Meal(LocalDateTime.now(), "Ужин" + " user2", 10), 2);
     }
 
     @Override

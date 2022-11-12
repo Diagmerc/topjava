@@ -4,7 +4,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://topjava.javawebinar.ru/functions" %>
-<%--<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>--%>
 <html>
 <head>
     <title>Meal list</title>
@@ -29,13 +28,13 @@
         <input type="hidden" name="action" value="filter">
         <dl>
             <dt>Date:</dt>
-            <dd><input type="date" name="dateStart" value="" ></dd>
-            <dd><input type="date" name="dateEnd" value="" ></dd>
+            <dd><input type="date" name="dateStart" value=""></dd>
+            <dd><input type="date" name="dateEnd" value=""></dd>
         </dl>
         <dl>
             <dt>Time:</dt>
-            <dd><input type="time" name="timeStart" value="" ></dd>
-            <dd><input type="time" name="timeEnd" value="" ></dd>
+            <dd><input type="time" name="timeStart" value=""></dd>
+            <dd><input type="time" name="timeEnd" value=""></dd>
         </dl>
         <button type="submit">Искать</button>
     </form>
@@ -59,7 +58,7 @@
                         <%--${fn:replace(meal.dateTime, 'T', ' ')}--%>
                         ${fn:formatDateTime(meal.dateTime)}
                 </td>
-                <td>${meal.description} for user ${meal.userId}</td>
+                <td>${meal.description}</td>
                 <td>${meal.calories}</td>
                 <td><a href="meals?action=update&id=${meal.id}">Update</a></td>
                 <td><a href="meals?action=delete&id=${meal.id}">Delete</a></td>

@@ -50,21 +50,16 @@ public class MealRestController {
 
     public List<MealTo> getAll() {
         log.info("getAll {}", SecurityUtil.authUserId());
-        return addUserIdforMeals(MealsUtil.getTos(service.getAll(SecurityUtil.authUserId()), MealsUtil.DEFAULT_CALORIES_PER_DAY));
+        return MealsUtil.getTos(service.getAll(SecurityUtil.authUserId()), MealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 
     public List<MealTo> getAllFilteredByDateTime(LocalTime startTime, LocalTime endTime, LocalDate startDate, LocalDate endDate) {
         log.info("getAllFilteredByDateTime");
-        startTime = startTime == null ? Util.minTime : startTime;
-        endTime = endTime == null ? Util.maxTime : endTime;
+        startTime = startTime == null ? LocalTime.MIN : startTime;
+        endTime = endTime == null ? LocalTime.MAX : endTime;
         startDate = startDate == null ? Util.minDate : startDate;
         endDate = endDate == null ? Util.maxDate : endDate;
         Collection<Meal> allFilteredByDateTime = service.getAllFilteredByDateTime(startDate, endDate, SecurityUtil.authUserId());
-        return addUserIdforMeals(MealsUtil.getFilteredTos(allFilteredByDateTime, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime));
-    }
-
-    public List<MealTo> addUserIdforMeals(List<MealTo> mealToList) {
-        mealToList.stream().forEach(mealTo -> mealTo.setUserId(SecurityUtil.authUserId()));
-        return mealToList;
+        return MealsUtil.getFilteredTos(allFilteredByDateTime, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
     }
 }
