@@ -28,10 +28,10 @@ create table user_roles
 create table meals
 (
     id               integer primary key default nextval('global_seq'),
-    user_id         integer                             not null,
+    user_id         integer                             ,
     date_time       timestamp             default now() not null,
     description     varchar                             not null,
     calories        integer                             not null,
     constraint meals_user_datetime_idx unique (user_id, date_time),
-        foreign key (user_id) references users (id) on delete cascade
+    foreign key (user_id) references users (id) on delete cascade
 );
