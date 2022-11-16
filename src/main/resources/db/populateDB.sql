@@ -15,9 +15,11 @@ insert into user_roles (role, user_id)
 values ('USER', 100000),
        ('ADMIN', 100001);
 
-insert into meals (user_id ,date_time, description, calories)
-values  (100000,'2022-01-22 21:00', 'ужин', 200),
-        (100000,'2022-01-22 15:00', 'обед', 300),
-        (100001,'2022-01-22 10:00', 'завтрак', 500);
+insert into meals (user_id, date_time, description, calories)
+values (100000, '2022-01-22 21:00', 'ужин', 200),
+       (100000, '2022-01-22 15:00', 'обед', 300),
+       (100001, '2022-01-22 10:00', 'завтрак', 500),
+        (100000,'2022-01-25 15:00', 'обед25', 300)
+;
 
 
