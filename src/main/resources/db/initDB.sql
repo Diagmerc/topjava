@@ -1,37 +1,37 @@
-drop TABLE IF EXISTS user_roles;
-drop TABLE IF EXISTS meals;
-drop TABLE IF EXISTS users;
-drop SEQUENCE IF EXISTS global_seq;
+DROP TABLE IF EXISTS user_roles;
+DROP TABLE IF EXISTS meals;
+DROP TABLE IF EXISTS users;
+DROP SEQUENCE IF EXISTS global_seq;
 
-create sequence global_seq start with 100000;
+CREATE SEQUENCE global_seq START WITH 100000;
 
-create table users
+CREATE TABLE users
 (
-    id               integer primary key default nextval('global_seq'),
+    id               INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
     name             VARCHAR                           NOT NULL,
-    email            varchar                           not null,
-    password         varchar                           not null,
-    registered       timestamp           default now() not null,
-    enabled          bool                default true  not null,
-    calories_per_day integer             default 2000  not null
+    email            VARCHAR                           NOT NULL,
+    password         VARCHAR                           NOT NULL,
+    registered       TIMESTAMP           DEFAULT now() NOT NULL,
+    enabled          BOOL                DEFAULT TRUE  NOT NULL,
+    calories_per_day INTEGER             DEFAULT 2000  NOT NULL
 );
-create unique index users_unique_email_idx on users (email);
+CREATE UNIQUE INDEX users_unique_email_idx ON users (email);
 
-create table user_roles
+CREATE TABLE user_roles
 (
-    user_id integer not null,
-    role    varchar not null,
-    constraint user_roles_idx unique (user_id, role),
-    foreign key (user_id) references users (id) on delete cascade
+    user_id INTEGER NOT NULL,
+    role    VARCHAR NOT NULL,
+    CONSTRAINT user_roles_idx UNIQUE (user_id, role),
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
-create table meals
+CREATE TABLE meals
 (
-    id               integer primary key default nextval('global_seq'),
-    user_id         integer                             ,
-    date_time       timestamp             default now() not null,
-    description     varchar                             not null,
-    calories        integer                             not null,
-    constraint meals_user_datetime_idx unique (user_id, date_time),
-    foreign key (user_id) references users (id) on delete cascade
+    id               INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    user_id         INTEGER                                     ,
+    date_time       TIMESTAMP                           NOT NULL,
+    description     VARCHAR                             NOT NULL,
+    calories        INTEGER                             NOT NULL,
+    CONSTRAINT meals_user_datetime_idx UNIQUE (user_id, date_time),
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
