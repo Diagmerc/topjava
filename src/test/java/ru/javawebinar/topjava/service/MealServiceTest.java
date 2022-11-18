@@ -29,51 +29,51 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
     @Autowired
-    MealService service;
+    private MealService service;
 
     @Test
     public void get() {
-        Meal meal = service.get(TEST_MEAL1.getId(), USER_ID);
-        assertThat(meal).isEqualTo(TEST_MEAL1);
+        Meal meal = service.get(USER_MEAL1.getId(), USER_ID);
+        assertThat(meal).isEqualTo(USER_MEAL1);
     }
 
     @Test
-    public void getWhithAnotherUser() {
-        assertThrows(NotFoundException.class, () -> service.get(TEST_MEAL1.getId(), ADMIN_ID));
+    public void getWithAnotherUser() {
+        assertThrows(NotFoundException.class, () -> service.get(USER_MEAL1.getId(), ADMIN_ID));
     }
 
     @Test
     public void delete() {
-        service.delete(TEST_MEAL3.getId(), ADMIN_ID);
-        assertThrows(NotFoundException.class, () -> service.delete(TEST_MEAL3.getId(), ADMIN_ID));
+        service.delete(ADMIN_MEAL3.getId(), ADMIN_ID);
+        assertThrows(NotFoundException.class, () -> service.delete(ADMIN_MEAL3.getId(), ADMIN_ID));
     }
 
     @Test
-    public void deleteWhithAnotherUser() {
-        assertThrows(NotFoundException.class, () -> service.delete(TEST_MEAL3.getId(), USER_ID));
+    public void deleteWithAnotherUser() {
+        assertThrows(NotFoundException.class, () -> service.delete(ADMIN_MEAL3.getId(), USER_ID));
     }
 
     @Test
     public void getBetweenInclusive() {
         List<Meal> betweenInclusive = service.getBetweenInclusive(START_TIME, END_TIME, USER_ID);
-        assertThat(betweenInclusive).isEqualTo(Arrays.asList(TEST_MEAL4));
+        assertThat(betweenInclusive).isEqualTo(Arrays.asList(USER_MEAL4));
     }
 
     @Test
     public void getAll() {
         List<Meal> all = service.getAll(USER_ID);
-        assertThat(all).isEqualTo(Arrays.asList(TEST_MEAL2, TEST_MEAL1));
+        assertThat(all).isEqualTo(Arrays.asList(USER_MEAL3, USER_MEAL2, USER_MEAL1, USER_MEAL4));
     }
 
     @Test
     public void update() {
         Meal updated = getUpdatedMeal();
         service.update(updated, USER_ID);
-        assertThat(service.get(TEST_MEAL1.getId(), USER_ID)).isEqualTo(getUpdatedMeal());
+        assertThat(service.get(USER_MEAL1.getId(), USER_ID)).isEqualTo(getUpdatedMeal());
     }
 
     @Test
-    public void updateWhithAnotherUser() {
+    public void updateWithAnotherUser() {
         Meal updated = getUpdatedMeal();
         assertThrows(NotFoundException.class, () -> service.update(updated, ADMIN_ID));
     }
@@ -87,9 +87,11 @@ public class MealServiceTest {
         assertThat(created).isEqualTo(newMeal);
         assertThat(service.get(newId, USER_ID)).isEqualTo(newMeal);
     }
+
     @Test
-    public void duplicateDateTimeCreate(){
+    public void duplicateDateTimeCreate() {
+        LocalDateTime duplicateDate = service.get(USER_MEAL1.getId(), USER_ID).getDateTime();
         assertThrows(DataAccessException.class,
-                ()-> service.create(new Meal(null, LocalDateTime.of(2022, 1, 22, 21, 0), "ужин", 1000), USER_ID));
+                () -> service.create(new Meal(null, duplicateDate, "ужин", 1000), USER_ID));
     }
 }
