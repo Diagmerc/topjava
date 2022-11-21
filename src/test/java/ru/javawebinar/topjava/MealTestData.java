@@ -21,18 +21,18 @@ public class MealTestData {
     public static final LocalDate END_TIME = LocalDate.of(2022, 01, 26);
 
     public static Meal getNewMeal() {
-        return new Meal(null, LocalDateTime.now(), "newdescription", 999);
+        return new Meal(null, LocalDateTime.of(2000,1,1,1,1,1), "newdescription", 999);
     }
 
     public static Meal getUpdatedMeal() {
         Meal updated = new Meal(userMeal1);
         updated.setCalories(999);
         updated.setDescription("description");
-        updated.setDateTime(LocalDateTime.now());
+        updated.setDateTime(LocalDateTime.of(2001,1,1,1,1,1));
         return updated;
     }
     public static void assertMatch(Meal actual, Meal expected) {
-        assertThat(actual).usingRecursiveComparison().ignoringFields("dateTime").isEqualTo(expected);
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 
     public static void assertMatch(Iterable<Meal> actual, Meal... expected) {
@@ -40,6 +40,6 @@ public class MealTestData {
     }
 
     public static void assertMatch(Iterable<Meal> actual, Iterable<Meal> expected) {
-        assertThat(actual).usingRecursiveFieldByFieldElementComparatorIgnoringFields("").isEqualTo(expected);
+        assertThat(actual).usingRecursiveFieldByFieldElementComparatorIgnoringFields().isEqualTo(expected);
     }
 }
