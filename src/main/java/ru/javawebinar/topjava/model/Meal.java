@@ -7,10 +7,22 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@NamedQueries({
+        @NamedQuery(name = Meal.MEAL, query = "SELECT m FROM Meal m WHERE m.id=:id AND m.user.id=:userId"),
+        @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=:id AND m.user.id=:userId"),
+        @NamedQuery(name = Meal.ALL, query = "SELECT m FROM Meal m WHERE m.user.id=:userId ORDER BY m.dateTime DESC"),
+        @NamedQuery(name = Meal.BETWEEN_HALF_OPEN, query = "SELECT m FROM Meal m WHERE m.user.id=:userId" +
+                " AND m.dateTime >=:startTime AND m.dateTime <:endTime ORDER BY m.dateTime DESC")
+})
 @Entity
 @Table(name = "meals")
 public class Meal extends AbstractBaseEntity {
-    @Column(name = "date_time", nullable = false)
+    public static final String MEAL = "Meal.get";
+    public static final String DELETE = "Meal.delete";
+    public static final String ALL = "Meal.getAll";
+    public static final String BETWEEN_HALF_OPEN = "Meal.getBetweenHalfOpen";
+
+    @Column(name = "date_time", nullable = false, unique = true)
     @NotBlank
     private LocalDateTime dateTime;
 
