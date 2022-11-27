@@ -109,6 +109,12 @@
             <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.3.4</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -130,14 +136,23 @@
             <artifactId>hibernate-core</artifactId>
             <version>5.6.14.Final</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>3.23.1</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>2.7.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.7.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <profiles>
