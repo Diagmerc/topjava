@@ -15,28 +15,29 @@ import java.time.LocalTime;
                 " AND m.dateTime >=:startTime AND m.dateTime <:endTime ORDER BY m.dateTime DESC")
 })
 @Entity
-@Table(name = "meals")
+@Table(name = "meals", uniqueConstraints = @UniqueConstraint(name = "meals_unique_user_datetime_idx", columnNames = {"user_id", "date_time"}))
 public class Meal extends AbstractBaseEntity {
     public static final String MEAL = "Meal.get";
     public static final String DELETE = "Meal.delete";
     public static final String ALL = "Meal.getAll";
     public static final String BETWEEN_HALF_OPEN = "Meal.getBetweenHalfOpen";
 
-    @Column(name = "date_time", nullable = false, unique = true)
-    @NotBlank
+    @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
 
     @Column(name = "description", nullable = false)
     @NotBlank
-    @Size(max = 128)
+    @Size(min = 2, max = 120)
     private String description;
 
     @Column(name = "calories", nullable = false)
-    @NotNull
+    @Min(10)
+    @Max(5000)
     private int calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id")
+    @NotNull
     private User user;
 
     public Meal() {
