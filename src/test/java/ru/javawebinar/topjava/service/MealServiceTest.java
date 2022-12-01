@@ -41,8 +41,8 @@ public class MealServiceTest {
         @Override
         protected void finished(long nanos, Description description) {
             String result = String.format("%-95s %7d", description.getDisplayName(), TimeUnit.NANOSECONDS.toMillis(nanos));
-            results.append(result).append('\n');
-            log.info(result + " ms\n");
+            results.append(result).append(" ms").append('\n');
+            log.info(result);
         }
     };
 
