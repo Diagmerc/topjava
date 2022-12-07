@@ -17,8 +17,7 @@ import java.util.List;
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.UserTestData.*;
 
-@ActiveProfiles(Profiles.REPOSITORY_IMPLEMENTATION)
-public class UserServiceTest extends AbstractServiceTest {
+public abstract class UserServiceTest extends AbstractServiceTest {
 
     @Autowired
     private UserService service;
