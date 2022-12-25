@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.AfterClass;
 import org.junit.Rule;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
@@ -9,6 +8,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.event.annotation.AfterTestExecution;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -44,7 +44,7 @@ public abstract class AbstractServiceTest {
     @Autowired
     private MealService service;
 
-    @AfterClass
+    @AfterTestExecution
     public static void printResult() {
         log.info("\n---------------------------------" +
                 "\nTest                 Duration, ms" +
