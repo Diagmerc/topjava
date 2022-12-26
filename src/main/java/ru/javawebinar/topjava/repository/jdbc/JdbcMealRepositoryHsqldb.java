@@ -23,7 +23,7 @@ public class JdbcMealRepositoryHsqldb extends AbstractJdbcMealRepository {
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
         Timestamp timeStampStart = Timestamp.valueOf(startDateTime);
         Timestamp timeStampEnd = Timestamp.valueOf(endDateTime);
-        return super.jdbcTemplate.query(
+        return jdbcTemplate.query(
                 "SELECT * FROM meals WHERE user_id=?  AND date_time >=  ? AND date_time < ? ORDER BY date_time DESC",
                 ROW_MAPPER, userId, timeStampStart, timeStampEnd);
     }
