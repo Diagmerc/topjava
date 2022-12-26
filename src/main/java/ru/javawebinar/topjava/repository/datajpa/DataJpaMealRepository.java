@@ -2,7 +2,7 @@ package ru.javawebinar.topjava.repository.datajpa;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.User;
@@ -28,6 +28,7 @@ public class DataJpaMealRepository implements MealRepository {
     }
 
     @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public Meal save(Meal meal, int userId) {
         log.info("transaction start!");
         if (meal.isNew() || get(meal.id(), userId) != null) {
@@ -46,7 +47,7 @@ public class DataJpaMealRepository implements MealRepository {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+//    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Meal get(int id, int userId) {
         return crudRepository.getByIdAndUser(id, userId);
     }
