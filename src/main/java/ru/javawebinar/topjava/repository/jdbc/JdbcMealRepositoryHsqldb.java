@@ -18,7 +18,7 @@ public class JdbcMealRepositoryHsqldb extends AbstractJdbcMealRepository {
     }
 
     @Override
-    public Timestamp classConverter(LocalDateTime time) {
+    public Timestamp timeConvertToJava8(LocalDateTime time) {
         return Timestamp.valueOf(time);
     }
 
