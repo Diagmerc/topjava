@@ -247,6 +247,7 @@
         </profile>
 
         <profile>
+
             <id>postgres</id>
             <dependencies>
                 <dependency>
@@ -284,4 +285,5 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
 </project>
