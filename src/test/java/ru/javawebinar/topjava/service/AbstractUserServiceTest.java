@@ -36,9 +36,6 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Autowired(required = false)
     protected JpaUtil jpaUtil;
 
-    @Autowired
-    Environment env;
-
     @Before
     public void setup() {
         if (!isJDBC()) {
@@ -95,7 +92,9 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     public void Aupdate() {
         User updated = getUpdated();
         service.update(updated);
-        USER_MATCHER.assertMatch(service.get(USER_ID), getUpdated());
+//        USER_MATCHER.assertMatch(service.get(USER_ID), getUpdated());
+        USER_MATCHER.assertMatch(service.getAll(), admin, guest, updated);
+        service.delete(updated.getId());
     }
 
     @Test
@@ -112,11 +111,5 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru", "  ", Role.USER)));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru", "password", 9, true, new Date(), Set.of())));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru", "password", 10001, true, new Date(), Set.of())));
-    }
-
-    private boolean isJDBC() {
-        String[] activeProfiles = env.getActiveProfiles();
-        boolean isJDBC = Arrays.asList(activeProfiles).contains(Profiles.JDBC);
-        return isJDBC;
     }
 }
