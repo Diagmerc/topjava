@@ -31,7 +31,7 @@ import static ru.javawebinar.topjava.util.ValidationUtil.getRootCause;
 public abstract class AbstractServiceTest {
 
     @Autowired
-    Environment env;
+    private Environment env;
 
     @ClassRule
     public static ExternalResource summary = TimingRules.SUMMARY;
