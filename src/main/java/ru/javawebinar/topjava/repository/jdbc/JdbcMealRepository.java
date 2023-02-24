@@ -18,7 +18,7 @@ import java.util.List;
 
 @Repository
 @Transactional(readOnly = true)
-public class JdbcMealRepository extends AbstractJdbcRepository implements MealRepository {
+public class JdbcMealRepository implements MealRepository, ValidateAble<Meal> {
 
     private static final RowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
 

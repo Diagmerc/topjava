@@ -16,8 +16,8 @@ import ru.javawebinar.topjava.repository.UserRepository;
 import java.util.*;
 
 @Repository
-@Transactional
-public class JdbcUserRepository extends AbstractJdbcRepository implements UserRepository {
+@Transactional(readOnly = true)
+public class JdbcUserRepository implements UserRepository, ValidateAble<User> {
 
     private static final BeanPropertyRowMapper<User> ROW_MAPPER = BeanPropertyRowMapper.newInstance(User.class);
 
@@ -40,6 +40,7 @@ public class JdbcUserRepository extends AbstractJdbcRepository implements UserRe
     @Override
     @Transactional
     public User save(User user) {
+        validate(user);
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
         Set<Role> roles = user.getRoles();
         if (user.isNew()) {
@@ -57,7 +58,6 @@ public class JdbcUserRepository extends AbstractJdbcRepository implements UserRe
             return null;
         }
         setRoles(user);
-        validate(user);
         return user;
     }
 
@@ -91,6 +91,7 @@ public class JdbcUserRepository extends AbstractJdbcRepository implements UserRe
         users.forEach(u -> u.setRoles(map.get(u.getId())));
         return users;
     }
+
     private User setRoles(User u) {
         if (u != null) {
             List<Role> roles = jdbcTemplate.queryForList("SELECT role FROM user_roles  WHERE user_id=?", Role.class, u.getId());

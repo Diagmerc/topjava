@@ -53,10 +53,4 @@ public abstract class AbstractServiceTest {
             }
         });
     }
-
-    protected boolean isJDBC() {
-        String[] activeProfiles = env.getActiveProfiles();
-        boolean isJDBC = Arrays.asList(activeProfiles).contains(Profiles.JDBC);
-        return isJDBC;
-    }
 }

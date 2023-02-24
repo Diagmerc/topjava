@@ -3,12 +3,12 @@ package ru.javawebinar.topjava.repository.jdbc;
 import javax.validation.*;
 import java.util.Set;
 
-public abstract class AbstractJdbcRepository {
-    protected void validate(Object entity){
+public interface ValidateAble<T> {
+    default void validate(T entity) {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         Validator validator = validatorFactory.getValidator();
-        Set<ConstraintViolation<Object>> validate = validator.validate(entity);
-        if(validate.size() > 0){
+        Set<ConstraintViolation<T>> validate = validator.validate(entity);
+        if (!validate.isEmpty()) {
             throw new ConstraintViolationException("wrong data", validate);
         }
     }

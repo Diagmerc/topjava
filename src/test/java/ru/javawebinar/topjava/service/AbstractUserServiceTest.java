@@ -1,9 +1,7 @@
 package ru.javawebinar.topjava.service;
 
 import org.junit.Before;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataAccessException;
@@ -21,7 +19,6 @@ import java.util.Set;
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.UserTestData.*;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Autowired
@@ -86,7 +83,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void Aupdate() {
+    public void update() {
         User updated = getUpdated();
         service.update(updated);
 //        USER_MATCHER.assertMatch(service.get(USER_ID), getUpdated());
@@ -95,17 +92,40 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void BgetAll() {
+    public void getAll() {
         List<User> all = service.getAll();
         USER_MATCHER.assertMatch(all, admin, guest, user);
     }
 
     @Test
     public void createWithException() throws Exception {
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, null, "mail@yandex.ru", "password", Role.USER)));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "  ", "mail@yandex.ru", "password", Role.USER)));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "  ", "password", Role.USER)));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru", "  ", Role.USER)));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru", "password", 9, true, new Date(), Set.of())));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru", "password", 10001, true, new Date(), Set.of())));
+    }
+
+    @Test
+    public void addUserRole() {
+        User user = service.get(USER_ID);
+        user.getRoles().add(Role.ADMIN);
+        USER_MATCHER.assertMatch(user, user2);
+    }
+
+    @Test
+    public void deleteUserRole() {
+        User user = service.get(USER_ID);
+        user.getRoles().remove(Role.USER);
+        USER_MATCHER.assertMatch(user, user3);
+    }
+
+    @Test
+    public void updateUserRole() {
+        User user = service.get(USER_ID);
+        user.getRoles().remove(Role.USER);
+        user.getRoles().add(Role.ADMIN);
+        USER_MATCHER.assertMatch(user, user4);
     }
 }
