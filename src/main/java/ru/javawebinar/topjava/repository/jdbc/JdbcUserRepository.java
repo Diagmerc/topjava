@@ -13,12 +13,11 @@ import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
-import javax.validation.constraints.Email;
 import java.util.*;
 
 @Repository
 @Transactional
-public class JdbcUserRepository implements UserRepository {
+public class JdbcUserRepository extends AbstractJdbcRepository implements UserRepository {
 
     private static final BeanPropertyRowMapper<User> ROW_MAPPER = BeanPropertyRowMapper.newInstance(User.class);
 
@@ -57,7 +56,9 @@ public class JdbcUserRepository implements UserRepository {
                 """, parameterSource) == 0) {
             return null;
         }
-        return setRoles(user);
+        setRoles(user);
+        validate(user);
+        return user;
     }
 
     @Override
@@ -73,7 +74,7 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public User getByEmail(@Email String email) {
+    public User getByEmail(String email) {
 //        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
         List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
         return setRoles(DataAccessUtils.singleResult(users));

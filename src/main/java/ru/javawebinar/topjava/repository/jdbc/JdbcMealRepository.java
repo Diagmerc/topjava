@@ -13,14 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
-import javax.sql.DataSource;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 @Transactional(readOnly = true)
-public class JdbcMealRepository implements MealRepository {
+public class JdbcMealRepository extends AbstractJdbcRepository implements MealRepository {
 
     private static final RowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
 
@@ -44,7 +42,8 @@ public class JdbcMealRepository implements MealRepository {
 
     @Override
     @Transactional
-    public Meal save(@NotNull Meal meal, int userId) {
+    public Meal save(Meal meal, int userId) {
+        validate(meal);
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", meal.getId())
                 .addValue("description", meal.getDescription())
