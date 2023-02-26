@@ -15,9 +15,11 @@ import ru.javawebinar.topjava.repository.UserRepository;
 
 import java.util.*;
 
+import static ru.javawebinar.topjava.util.ValidationUtil.validate;
+
 @Repository
 @Transactional(readOnly = true)
-public class JdbcUserRepository implements UserRepository, ValidateAble<User> {
+public class JdbcUserRepository implements UserRepository {
 
     private static final BeanPropertyRowMapper<User> ROW_MAPPER = BeanPropertyRowMapper.newInstance(User.class);
 
