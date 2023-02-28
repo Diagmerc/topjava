@@ -109,9 +109,10 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test
     public void updateAdminRole() {
-        admin.getRoles().remove(Role.USER);
-        service.update(admin);
-        User user = service.get(ADMIN_ID);
-        USER_MATCHER.assertMatch(user, admin);
+        User adminCopy = UserTestData.admin;
+        adminCopy.getRoles().remove(Role.USER);
+        service.update(adminCopy);
+        USER_MATCHER.assertMatch(service.get(ADMIN_ID), adminCopy);
+        adminCopy.getRoles().add(Role.USER);
     }
 }
