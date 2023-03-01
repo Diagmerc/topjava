@@ -53,11 +53,21 @@ public class JdbcUserRepository implements UserRepository {
                    UPDATE users SET name=:name, email=:email, password=:password, 
                    registered=:registered, enabled=:enabled, calories_per_day=:caloriesPerDay WHERE id=:id
                 """, parameterSource) == 0) {
+            insertRoles(user, roles);
             return null;
+        } else {
+            jdbcTemplate.update("DELETE FROM user_roles WHERE user_id=?", user.getId());
+            insertRoles(user, roles);
         }
-        jdbcTemplate.update("DELETE FROM user_roles WHERE user_id=?", user.getId());
-        insertRoles(user, roles);
         return user;
+    }
+
+    private void insertRoles(User user, Set<Role> roles) {
+        jdbcTemplate.batchUpdate("INSERT INTO user_roles (user_id, role) VALUES (?, ?)", roles, roles.size(),
+                (ps, role) -> {
+                    ps.setInt(1, user.id());
+                    ps.setString(2, role.name());
+                });
     }
 
     @Override
@@ -97,13 +107,5 @@ public class JdbcUserRepository implements UserRepository {
             u.setRoles(roles);
         }
         return u;
-    }
-
-    private void insertRoles(User user, Set<Role> roles) {
-        jdbcTemplate.batchUpdate("INSERT INTO user_roles (user_id, role) VALUES (?, ?)", roles, roles.size(),
-                (ps, role) -> {
-                    ps.setInt(1, user.id());
-                    ps.setString(2, role.name());
-                });
     }
 }
