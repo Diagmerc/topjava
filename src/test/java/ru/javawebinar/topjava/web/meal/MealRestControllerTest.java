@@ -62,6 +62,7 @@ public class MealRestControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(newMeal)))
                 .andExpect(status().isCreated());
         Meal created = MEAL_MATCHER.readFromJson(action);
+        newMeal.setId(MEAL1_ID + allMeals.size());
         MEAL_MATCHER.assertMatch(created, newMeal);
     }
 

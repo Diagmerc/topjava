@@ -37,7 +37,7 @@ public class MealRestController extends AbstractMealController {
 
     @Override
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.CREATED)
     public Meal create(@RequestBody Meal meal) {
         return super.create(meal);
     }
