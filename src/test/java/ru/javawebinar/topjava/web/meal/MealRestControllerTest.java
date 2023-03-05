@@ -30,7 +30,7 @@ public class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + MEAL1_ID))
+        perform(MockMvcRequestBuilders.get(REST_URL+ "get/" + MEAL1_ID))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -39,7 +39,7 @@ public class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + MEAL1_ID))
+        perform(MockMvcRequestBuilders.delete(REST_URL + "delete/" + MEAL1_ID))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         assertThrows(NotFoundException.class, () -> mealService.get(MEAL1_ID, USER_ID));
@@ -57,7 +57,7 @@ public class MealRestControllerTest extends AbstractControllerTest {
     @Test
     void create() throws Exception {
         Meal newMeal = getNew();
-        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + "create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newMeal)))
                 .andExpect(status().isCreated());
@@ -69,11 +69,12 @@ public class MealRestControllerTest extends AbstractControllerTest {
     @Test
     void update() throws Exception {
         Meal updated = getUpdated();
-        perform(MockMvcRequestBuilders.put(REST_URL + MEAL1_ID)
+        perform(MockMvcRequestBuilders.put(REST_URL + "update/" + MEAL1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
         MEAL_MATCHER.assertMatch(mealService.get(MEAL1_ID, USER_ID), updated);
+        System.out.println(JsonUtil.writeValue(updated));
     }
 
     @Test
