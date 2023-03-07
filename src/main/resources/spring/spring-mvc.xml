@@ -38,7 +38,6 @@
         </property>
     </bean>
 
-<!--    <mvc:annotation-driven conversion-service="conversionService"/>-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
           p:prefix="/WEB-INF/jsp/"
           p:suffix=".jsp"/>
