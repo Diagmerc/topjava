@@ -19,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.javawebinar.topjava.MealTestData.*;
+import static ru.javawebinar.topjava.UserTestData.CALORIES_PER_DAY;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
 public class MealRestControllerTest extends AbstractControllerTest {
@@ -51,7 +52,7 @@ public class MealRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MEAL_MATCHER_TO.contentJson(MealsUtil.getTos(meals, 2000)));
+                .andExpect(MEAL_MATCHER_TO.contentJson(MealsUtil.getTos(meals, CALORIES_PER_DAY)));
     }
 
     @Test
@@ -74,14 +75,13 @@ public class MealRestControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
         MEAL_MATCHER.assertMatch(mealService.get(MEAL1_ID, USER_ID), updated);
-        System.out.println(JsonUtil.writeValue(updated));
     }
 
     @Test
     void getBetween() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "between" + "?startDate=2020-01-30&startTime=01:00&endDate=2020-01-30&endTime=23:59"))
+        perform(MockMvcRequestBuilders.get(REST_URL + "between" + "?startDate=2020-01-30&startTime=00:00&endDate=2020-01-30&endTime=23:59"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MEAL_MATCHER_TO.contentJson(MealsUtil.getTos(List.of(meal3, meal2, meal1), 2000)));
+                .andExpect(MEAL_MATCHER_TO.contentJson(MealsUtil.getTos(List.of(meal3, meal2, meal1), CALORIES_PER_DAY)));
     }
 }
