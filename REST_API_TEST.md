@@ -10,13 +10,13 @@ Delete meals by id, method DELETE:
 curl -X DELETE http://localhost:8080/topjava/rest/meals/100003
 
 Get between datetime, method GET:
-curl -v "http://localhost:8080/topjava/rest/meals/between?startDate=2020-01-30&startTime=01:00&endDate=2020-01-30&endTime=23:59"
+curl -v "http://localhost:8080/topjava/rest/meals/between?startDate=2020-01-30&startTime=10:00&endDate=2020-01-30&endTime=20:00"
 
 Update meal, method PUT:
 curl -X PUT -d '{"dateTime":"2020-01-30T10:00:00","description":"Завтрак обновлен","calories":500}' -H 'Content-Type: application/json' http://localhost:8080/topjava/rest/meals/100005
 
 Create meal, method POST:
-curl -X POST -d '{"dateTime":"2020-07-01T12:00","description":"Новая еда","calories":300}' -H 'contentType:'application/json'' http://localhost:8080/topjava/rest/meals
+curl -X POST -d '{"dateTime":"2020-07-01T12:00","description":"Новая еда","calories":300}' -H  'Content-Type: application/json' http://localhost:8080/topjava/rest/meals
 
 Test methods with Postman
 
