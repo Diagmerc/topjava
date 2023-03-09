@@ -1,4 +1,4 @@
-Test methods with command line #curl:
+Test methods with git bash #curl:
 
 Get meals by id, method GET:
 curl -v http://localhost:8080/topjava/rest/meals/100003
