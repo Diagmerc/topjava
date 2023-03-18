@@ -14,32 +14,39 @@ import java.time.LocalTime;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/meals", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/ui/meals", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MealUIController extends AbstractMealController {
 
     @Override
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     public List<MealTo> getAll() {
         return super.getAll();
     }
 
+    @Override
+    @DeleteMapping("/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int id) {
+        super.delete(id);
+    }
+
     @PostMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void create(@RequestParam Integer id,
-                               @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime,
-                               @RequestParam String description,
-                               @RequestParam Integer calories) {
-        Meal meal = new Meal(id, dateTime, description, calories);
+    public void create(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime,
+            @RequestParam String description,
+            @RequestParam Integer calories) {
+        Meal meal = new Meal(null, dateTime, description, calories);
         if (meal.isNew()) {
             super.create(meal);
         }
     }
 
-    @GetMapping(value="/getBetween",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getBetween")
     public List<MealTo> getBetween(@Nullable LocalDate startDate, @Nullable LocalTime startTime,
                                    @Nullable LocalDate endDate, @Nullable LocalTime endTime) {
 
-        return super.getBetween(startDate,startTime,endDate,endTime);
+        return super.getBetween(startDate, startTime, endDate, endTime);
 
     }
 
