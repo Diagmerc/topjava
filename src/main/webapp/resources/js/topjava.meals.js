@@ -6,35 +6,61 @@ const ctx = {
 };
 
 $(function () {
-    makeEditable(
-        $("#datatable").DataTable({
-            "paging": false,
-            "info": true,
-            "columns": [
-                {
-                    "data": "dateTime"
-                },
-                {
-                    "data": "description"
-                },
-                {
-                    "data": "calories"
-                },
-                {
-                    "defaultContent": "Edit",
-                    "orderable": false
-                },
-                {
-                    "defaultContent": "Delete",
-                    "orderable": false
-                }
-            ],
-            "order": [
-                [
-                    0,
-                    "asc"
+    makeEditable({
+            ctx,
+            datatableApi: $("#datatable").DataTable({
+                "paging": false,
+                "info": true,
+                "columns": [
+                    {
+                        "data": "dateTime"
+                    },
+                    {
+                        "data": "description"
+                    },
+                    {
+                        "data": "calories"
+                    },
+                    {
+                        "defaultContent": "Edit",
+                        "orderable": false
+                    },
+                    {
+                        "defaultContent": "Delete",
+                        "orderable": false
+                    }
+                ],
+                "order": [
+                    [
+                        0,
+                        "asc"
+                    ]
                 ]
-            ]
-        })
+            })
+        }
     );
+    makeFilter();
+    makeResetFilter();
 });
+
+function makeFilter(){
+    $("#buttonFilter").click(function(){
+        $.ajax({
+            type: "GET",
+            url: ctx.ajaxUrl + "getBetween",
+            data: $('#filterForm').serialize()
+        }).done(function () {
+            updateTable();
+            successNoty("Filtered");
+        });
+    });
+}
+
+function makeResetFilter(){
+    $("#resetFilter").click(function(){
+        $("#filterForm").each(function(){
+            $(this).find(":input").val("");
+        });
+        $("#buttonFilter").click();
+    });
+}
